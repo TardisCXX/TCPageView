@@ -19,7 +19,11 @@ class ViewController: UIViewController {
         automaticallyAdjustsScrollViewInsets = false
         
         let style = TCHeaderStyle()
-        let titles = ["热门", "头条", "地理", "文学", "历史"]
+        style.isScroll = true
+//        let titles = ["热门", "头条", "地理", "文学", "历史"]
+        let titles = ["热门", "头条", "天文地理", "史前文明", "人类大科技", "暴雪游戏嘉年华", "漫威世界之平行宇宙", "美女日常"]
+
+        
         var childControllers = [UIViewController]()
         
         for _ in 0..<titles.count {

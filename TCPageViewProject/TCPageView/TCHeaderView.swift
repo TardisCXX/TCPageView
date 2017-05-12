@@ -86,6 +86,10 @@ extension TCHeaderView {
             }
             
             lbl.frame = CGRect(x: x, y: y, width: w, height: h)
+            
+            if style.isScroll {
+                scrollView.contentSize.width = titleLbls.last!.frame.maxX + style.titleMargin * 0.5
+            }
 
         }
     }
