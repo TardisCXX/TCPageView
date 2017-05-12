@@ -11,6 +11,7 @@
 		505233CD1EC56BE500CD78A5 /* TCContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505233CC1EC56BE500CD78A5 /* TCContentView.swift */; };
 		505233CF1EC56C4B00CD78A5 /* TCHeaderStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505233CE1EC56C4B00CD78A5 /* TCHeaderStyle.swift */; };
 		505233D11EC582AC00CD78A5 /* TCHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505233D01EC582AC00CD78A5 /* TCHeaderView.swift */; };
+		50757FA31EC5887A00DDA7CF /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50757FA21EC5887A00DDA7CF /* UIColor+Extension.swift */; };
 		509539781EC309B100DD8D0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509539771EC309B100DD8D0A /* AppDelegate.swift */; };
 		5095397A1EC309B100DD8D0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509539791EC309B100DD8D0A /* ViewController.swift */; };
 		5095397D1EC309B100DD8D0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5095397B1EC309B100DD8D0A /* Main.storyboard */; };
@@ -42,6 +43,7 @@
 		505233CC1EC56BE500CD78A5 /* TCContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCContentView.swift; sourceTree = "<group>"; };
 		505233CE1EC56C4B00CD78A5 /* TCHeaderStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCHeaderStyle.swift; sourceTree = "<group>"; };
 		505233D01EC582AC00CD78A5 /* TCHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCHeaderView.swift; sourceTree = "<group>"; };
+		50757FA21EC5887A00DDA7CF /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		509539741EC309B100DD8D0A /* TCPageViewProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCPageViewProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		509539771EC309B100DD8D0A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		509539791EC309B100DD8D0A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				505233D01EC582AC00CD78A5 /* TCHeaderView.swift */,
 				505233CC1EC56BE500CD78A5 /* TCContentView.swift */,
 				505233CE1EC56C4B00CD78A5 /* TCHeaderStyle.swift */,
+				50757FA21EC5887A00DDA7CF /* UIColor+Extension.swift */,
 			);
 			path = TCPageView;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50757FA31EC5887A00DDA7CF /* UIColor+Extension.swift in Sources */,
 				5095397A1EC309B100DD8D0A /* ViewController.swift in Sources */,
 				505233C91EC56B8600CD78A5 /* TCPageView.swift in Sources */,
 				509539781EC309B100DD8D0A /* AppDelegate.swift in Sources */,

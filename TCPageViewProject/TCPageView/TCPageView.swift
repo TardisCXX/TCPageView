@@ -29,7 +29,7 @@ class TCPageView: UIView {
         
         super.init(frame: frame)
         
-        
+        setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -46,8 +46,9 @@ extension TCPageView {
         titleView.backgroundColor = UIColor.brown
         addSubview(titleView)
         
-        let content 
-        let contentView = TCContentView(frame: <#T##CGRect#>, childControllers: <#T##[UIViewController]#>)
+        let contentRect = CGRect(x: 0, y: style.headerHeight, width: bounds.width, height: bounds.height - style.headerHeight)
+        let contentView = TCContentView(frame: contentRect, childControllers: childControllers)
+        addSubview(contentView)
         
     }
 }

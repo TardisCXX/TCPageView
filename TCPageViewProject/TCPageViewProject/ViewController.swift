@@ -14,21 +14,22 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor(hex: "0xcccccc")
         
-        let style = TCHeaderStyle()
-        let titles = ["热门", "头条", "地理", "文学", "历史"]
-        var childControllers = [UIViewController]()
-        
-        for _ in 0..<titles.count {
-            let vc = UIViewController()
-            vc.view.backgroundColor = UIColor.red
-            childControllers.append(vc)
-        }
-        
-        let pageView = TCPageView(frame: view.bounds, style: style, titles: titles, childControllers: childControllers)
-        pageView.backgroundColor = UIColor.yellow
-        view.addSubview(pageView)
+//        let style = TCHeaderStyle()
+//        let titles = ["热门", "头条", "地理", "文学", "历史"]
+//        var childControllers = [UIViewController]()
+//        
+//        for _ in 0..<titles.count {
+//            let vc = UIViewController()
+//            vc.view.backgroundColor = .randomColor
+//            childControllers.append(vc)
+//        }
+//        
+//        let pageRect = CGRect(x: 0, y: 64.0, width: view.bounds.width, height: view.bounds.height - 64.0)
+//        let pageView = TCPageView(frame: pageRect, style: style, titles: titles, childControllers: childControllers)
+//        pageView.backgroundColor = .randomColor
+//        view.addSubview(pageView)
         
     }
 
