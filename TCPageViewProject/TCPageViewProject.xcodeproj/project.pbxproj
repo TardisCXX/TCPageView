@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		505233C91EC56B8600CD78A5 /* TCPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505233C81EC56B8600CD78A5 /* TCPageView.swift */; };
+		505233CD1EC56BE500CD78A5 /* TCContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505233CC1EC56BE500CD78A5 /* TCContentView.swift */; };
+		505233CF1EC56C4B00CD78A5 /* TCHeaderStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505233CE1EC56C4B00CD78A5 /* TCHeaderStyle.swift */; };
+		505233D11EC582AC00CD78A5 /* TCHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505233D01EC582AC00CD78A5 /* TCHeaderView.swift */; };
 		509539781EC309B100DD8D0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509539771EC309B100DD8D0A /* AppDelegate.swift */; };
 		5095397A1EC309B100DD8D0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509539791EC309B100DD8D0A /* ViewController.swift */; };
 		5095397D1EC309B100DD8D0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5095397B1EC309B100DD8D0A /* Main.storyboard */; };
@@ -14,7 +18,6 @@
 		509539821EC309B100DD8D0A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 509539801EC309B100DD8D0A /* LaunchScreen.storyboard */; };
 		5095398D1EC309B100DD8D0A /* TCPageViewProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5095398C1EC309B100DD8D0A /* TCPageViewProjectTests.swift */; };
 		509539981EC309B100DD8D0A /* TCPageViewProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509539971EC309B100DD8D0A /* TCPageViewProjectUITests.swift */; };
-		509539A71EC309D800DD8D0A /* TCPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509539A61EC309D800DD8D0A /* TCPerson.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		505233C81EC56B8600CD78A5 /* TCPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPageView.swift; sourceTree = "<group>"; };
+		505233CC1EC56BE500CD78A5 /* TCContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCContentView.swift; sourceTree = "<group>"; };
+		505233CE1EC56C4B00CD78A5 /* TCHeaderStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCHeaderStyle.swift; sourceTree = "<group>"; };
+		505233D01EC582AC00CD78A5 /* TCHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCHeaderView.swift; sourceTree = "<group>"; };
 		509539741EC309B100DD8D0A /* TCPageViewProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCPageViewProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		509539771EC309B100DD8D0A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		509539791EC309B100DD8D0A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -48,7 +55,6 @@
 		509539931EC309B100DD8D0A /* TCPageViewProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCPageViewProjectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		509539971EC309B100DD8D0A /* TCPageViewProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCPageViewProjectUITests.swift; sourceTree = "<group>"; };
 		509539991EC309B100DD8D0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		509539A61EC309D800DD8D0A /* TCPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPerson.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +137,10 @@
 		509539A51EC309CA00DD8D0A /* TCPageView */ = {
 			isa = PBXGroup;
 			children = (
-				509539A61EC309D800DD8D0A /* TCPerson.swift */,
+				505233C81EC56B8600CD78A5 /* TCPageView.swift */,
+				505233D01EC582AC00CD78A5 /* TCHeaderView.swift */,
+				505233CC1EC56BE500CD78A5 /* TCContentView.swift */,
+				505233CE1EC56C4B00CD78A5 /* TCHeaderStyle.swift */,
 			);
 			path = TCPageView;
 			sourceTree = "<group>";
@@ -198,6 +207,7 @@
 		5095396C1EC309B100DD8D0A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = TC;
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = tardis_cxx;
@@ -271,8 +281,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5095397A1EC309B100DD8D0A /* ViewController.swift in Sources */,
+				505233C91EC56B8600CD78A5 /* TCPageView.swift in Sources */,
 				509539781EC309B100DD8D0A /* AppDelegate.swift in Sources */,
-				509539A71EC309D800DD8D0A /* TCPerson.swift in Sources */,
+				505233CD1EC56BE500CD78A5 /* TCContentView.swift in Sources */,
+				505233D11EC582AC00CD78A5 /* TCHeaderView.swift in Sources */,
+				505233CF1EC56C4B00CD78A5 /* TCHeaderStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +530,7 @@
 				5095399E1EC309B100DD8D0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5095399F1EC309B100DD8D0A /* Build configuration list for PBXNativeTarget "TCPageViewProjectTests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +539,7 @@
 				509539A11EC309B100DD8D0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		509539A21EC309B100DD8D0A /* Build configuration list for PBXNativeTarget "TCPageViewProjectUITests" */ = {
 			isa = XCConfigurationList;
@@ -533,6 +548,7 @@
 				509539A41EC309B100DD8D0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

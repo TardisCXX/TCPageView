@@ -7,8 +7,9 @@ Pod::Spec.new do |s|
   s.author             = { "TardisCXX" => "email@address.com" }
   s.platform     = :ios, "8.0"
 
-  s.source       = { :git => "https://github.com/TardisCXX/TCPageView.git", :tag => s.version }
-s.source_files  = "TCPageView", "TCPageViewProject/TCPageView/*.{swift}"
+  s.source       = { :git => "https://github.com/TardisCXX/TCPageView.git", :tag => "#{s.version}" }
+  s.source_files  = "TCPageView", "TCPageViewProject/TCPageView/*.swift"
   s.requires_arc = true
+  s.framework  = "UIKit"
 
 end

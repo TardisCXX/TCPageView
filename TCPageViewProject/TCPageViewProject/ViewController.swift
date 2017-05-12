@@ -13,6 +13,23 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        view.backgroundColor = UIColor.white
+        
+        let style = TCHeaderStyle()
+        let titles = ["热门", "头条", "地理", "文学", "历史"]
+        var childControllers = [UIViewController]()
+        
+        for _ in 0..<titles.count {
+            let vc = UIViewController()
+            vc.view.backgroundColor = UIColor.red
+            childControllers.append(vc)
+        }
+        
+        let pageView = TCPageView(frame: view.bounds, style: style, titles: titles, childControllers: childControllers)
+        pageView.backgroundColor = UIColor.yellow
+        view.addSubview(pageView)
+        
     }
 
     override func didReceiveMemoryWarning() {
