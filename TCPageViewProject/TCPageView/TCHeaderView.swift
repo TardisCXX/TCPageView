@@ -8,12 +8,24 @@
 
 import UIKit
 
+@objc protocol TCHeaderViewDelegate: class {
+    
+    @objc optional func headerView(_ headerView: TCHeaderView, currentIndex: Int)
+    
+}
+
 class TCHeaderView: UIView {
 
     // MARK: 属性
     
+    /// 代理
+    weak var delegate: TCHeaderViewDelegate?
+    
+    /// 样式
     fileprivate var style: TCHeaderStyle
+    /// 标题数组
     fileprivate var titles: [String]
+    /// 当前label索引
     fileprivate var currentIndex: Int = 0
     
     /// scrollView
@@ -102,6 +114,11 @@ extension TCHeaderView {
         guard let targetLbl = tap.view as? UILabel else {
             return
         }
+        
+        if targetLbl.tag == currentIndex {
+            return
+        }
+        
         let sourceLbl = titleLbls[currentIndex]
         sourceLbl.textColor = style.normalColor
         targetLbl.textColor = style.selectColor
@@ -110,8 +127,8 @@ extension TCHeaderView {
         currentIndex = targetLbl.tag
         
         labelScrollToCenter(targetLbl)
-        
-        print(targetLbl.tag)
+                
+        delegate?.headerView?(self, currentIndex: currentIndex)
     }
     
     fileprivate func labelScrollToCenter(_ targetLbl: UILabel) {
@@ -128,5 +145,16 @@ extension TCHeaderView {
         }
         
         scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
+    }
+}
+
+extension TCHeaderView: TCContentViewDelegate {
+    
+    func contentView(contentView: TCContentView, visableItmeIndex: Int) {
+        currentIndex = visableItmeIndex
+        let lbl = titleLbls[currentIndex]
+        labelScrollToCenter(lbl)
+        
+        print(visableItmeIndex)
     }
 }

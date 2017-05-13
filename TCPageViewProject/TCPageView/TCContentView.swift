@@ -8,11 +8,18 @@
 
 import UIKit
 
+@objc protocol TCContentViewDelegate: class {
+    @objc optional func contentView(contentView: TCContentView, visableItmeIndex: Int)
+}
+
 fileprivate let kUICollectionViewCellIdenfier = "UICollectionViewCell"
 
 class TCContentView: UIView {
     
     // MARK: 属性
+    
+    /// 代理
+    weak var delegate: TCContentViewDelegate?
     
     fileprivate var childControllers: [UIViewController]
     /// 根控制器
@@ -67,6 +74,15 @@ extension TCContentView {
     }
 }
 
+extension TCContentView {
+    
+    /// 设置滚动结果
+    fileprivate func collectionViewDidEndScroll() {
+        let index = collectionView.contentOffset.x / collectionView.bounds.width
+        delegate?.contentView?(contentView: self, visableItmeIndex: Int(index))
+    }
+}
+
 // MARK: UICollectionViewDataSource
 extension TCContentView: UICollectionViewDataSource {
     
@@ -92,4 +108,24 @@ extension TCContentView: UICollectionViewDataSource {
 // MARK: UICollectionViewDelegate
 extension TCContentView: UICollectionViewDelegate {
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        collectionViewDidEndScroll()
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            collectionViewDidEndScroll()
+        }
+    }
+}
+
+// MARK: TCHeaderViewDelegate
+extension TCContentView: TCHeaderViewDelegate {
+    
+    func headerView(_ headerView: TCHeaderView, currentIndex: Int) {
+        let indexPath = IndexPath(item: currentIndex, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .left, animated: false)
+        
+        print(currentIndex)
+    }
 }

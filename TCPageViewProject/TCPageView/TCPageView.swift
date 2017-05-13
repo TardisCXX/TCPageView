@@ -13,13 +13,13 @@ class TCPageView: UIView {
     // MARK: 属性
     
     /// 样式
-    var style: TCHeaderStyle
+    fileprivate var style: TCHeaderStyle
     /// 标题数组
-    var titles: [String]
+    fileprivate var titles: [String]
     /// 控制器数组
-    var childControllers: [UIViewController]
+    fileprivate var childControllers: [UIViewController]
     /// 根控制器
-    var rootController: UIViewController
+    fileprivate var rootController: UIViewController
     
     // MARK: 构造函数
     
@@ -45,13 +45,16 @@ extension TCPageView {
     
     fileprivate func setupUI() {
         let headerRect = CGRect(x: 0, y: 0, width: bounds.width, height: 44.0)
-        let titleView = TCHeaderView(frame: headerRect, sytle: style, titles: titles)
-        titleView.backgroundColor = UIColor.brown
-        addSubview(titleView)
+        let headerView = TCHeaderView(frame: headerRect, sytle: style, titles: titles)
+        headerView.backgroundColor = UIColor.brown
+        addSubview(headerView)
         
         let contentRect = CGRect(x: 0, y: style.headerHeight, width: bounds.width, height: bounds.height - style.headerHeight)
         let contentView = TCContentView(frame: contentRect, childControllers: childControllers, rootController: rootController)
         addSubview(contentView)
+        
+        headerView.delegate = contentView
+        contentView.delegate = headerView
         
     }
 }
