@@ -217,6 +217,7 @@
 				TargetAttributes = {
 					509539731EC309B100DD8D0A = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = URFBB2GVNJ;
 						ProvisioningStyle = Automatic;
 					};
 					509539871EC309B100DD8D0A = {
@@ -441,6 +442,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = URFBB2GVNJ;
 				INFOPLIST_FILE = TCPageViewProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tardis-cxx.TCPageViewProject";
@@ -453,6 +455,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = URFBB2GVNJ;
 				INFOPLIST_FILE = TCPageViewProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tardis-cxx.TCPageViewProject";

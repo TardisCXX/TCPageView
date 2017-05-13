@@ -41,25 +41,21 @@ class TCHeaderView: UIView {
     }()
     
     /// 获取普通状态的RGB值
-    fileprivate lazy var normalRGB: (CGFloat, CGFloat, CGFloat) = {
-        var r: CGFloat = 0
-        var g: CGFloat = 0
-        var b: CGFloat = 0
-        var a: CGFloat = 0
-        self.style.normalColor.getRed(&r, green: &g, blue: &b, alpha: &a)
-        
-        return (r, g, b)
+    fileprivate lazy var normalRGB: ColorRGB = {
+       return self.style.normalColor.getRGBValueFromColor()
     }()
     
     /// 获取选中状态的RGB值
-    fileprivate lazy var selectRGB: (CGFloat, CGFloat, CGFloat) = {
-        var r: CGFloat = 0
-        var g: CGFloat = 0
-        var b: CGFloat = 0
-        var a: CGFloat = 0
-        self.style.selectColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+    fileprivate lazy var selectRGB: ColorRGB = {
+        return self.style.selectColor.getRGBValueFromColor()
+    }()
+    
+    fileprivate lazy var deltaRGB: ColorRGB = {
+        let deltaR = self.selectRGB.red - self.normalRGB.red
+        let deltaG = self.selectRGB.green - self.normalRGB.green
+        let deltaB = self.selectRGB.blue - self.normalRGB.blue
         
-        return (r, g, b)
+        return (deltaR, deltaG, deltaB)
     }()
     
     /// 标题标签数组
@@ -183,7 +179,14 @@ extension TCHeaderView: TCContentViewDelegate {
         let sourceLbl = titleLbls[sourceIndex]
         let targetLbl = titleLbls[targetIndex]
         
+        let r1 = selectRGB.red - deltaRGB.red * progress
+        let g1 = selectRGB.green - deltaRGB.green * progress
+        let b1 = selectRGB.blue - deltaRGB.blue * progress
+        sourceLbl.textColor = UIColor(r: r1, g: g1, b: b1)
         
-        
+        let r2 = normalRGB.red + deltaRGB.red * progress
+        let g2 = normalRGB.green + deltaRGB.green * progress
+        let b2 = normalRGB.blue + deltaRGB.blue * progress
+        targetLbl.textColor = UIColor(r: r2, g: g2, b: b2)
     }
 }

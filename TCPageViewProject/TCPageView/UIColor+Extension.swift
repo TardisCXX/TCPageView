@@ -8,6 +8,8 @@
 
 import UIKit
 
+typealias ColorRGB = (red: CGFloat, green: CGFloat, blue: CGFloat)
+
 extension UIColor {
     
     convenience init(r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, alpha: CGFloat = 1.0) {
@@ -55,6 +57,16 @@ extension UIColor {
         Scanner(string: bStr).scanHexInt32(&b)
         
         self.init(r: CGFloat(r), g: CGFloat(g), b: CGFloat(b), alpha: alpha)
+    }
+    
+    func getRGBValueFromColor() -> ColorRGB {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        return (r * 255, g * 255, b * 255)
     }
     
 }

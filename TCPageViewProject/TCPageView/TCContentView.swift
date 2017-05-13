@@ -22,8 +22,11 @@ class TCContentView: UIView {
     /// 代理
     weak var delegate: TCContentViewDelegate?
     
+    /// 是否通知代理
+    fileprivate var isDelegateEnable = true
+    /// 子VC
     fileprivate var childControllers: [UIViewController]
-    /// 根控制器
+    /// 根VC
     fileprivate var rootController: UIViewController
     /// 记录一开始时的offsetX
     fileprivate var startOffsetX: CGFloat = 0
@@ -122,11 +125,16 @@ extension TCContentView: UICollectionViewDelegate {
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isDelegateEnable = true
         startOffsetX = scrollView.contentOffset.x
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.x == startOffsetX {
+            return
+        }
+        
+        if isDelegateEnable == false {
             return
         }
         
@@ -153,6 +161,8 @@ extension TCContentView: UICollectionViewDelegate {
 extension TCContentView: TCHeaderViewDelegate {
     
     func headerView(_ headerView: TCHeaderView, currentIndex: Int) {
+        isDelegateEnable = false
+        
         let indexPath = IndexPath(item: currentIndex, section: 0)
         collectionView.scrollToItem(at: indexPath, at: .left, animated: false)
         
