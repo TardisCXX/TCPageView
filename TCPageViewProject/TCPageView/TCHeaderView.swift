@@ -61,6 +61,13 @@ class TCHeaderView: UIView {
     /// 标题标签数组
     fileprivate lazy var titleLbls: [UILabel] = [UILabel]()
     
+    fileprivate lazy var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = self.style.bottomLineColor
+        
+        return view
+    }()
+    
     // MARK: 构造函数
     
     init(frame: CGRect, sytle: TCHeaderStyle, titles: [String]) {
@@ -85,6 +92,23 @@ extension TCHeaderView {
         addSubview(scrollView)
         
         setupTitleLabels()
+        
+        setupBottomLine()
+    }
+    
+    private func setupBottomLine() {
+        if style.isShowBottomLine == false{
+            return
+        }
+        
+        scrollView .addSubview(lineView)
+        
+        let x = titleLbls.first!.frame.origin.x
+        let y = self.bounds.height - self.style.bottomLineHeight
+        let w = titleLbls.first!.frame.width
+        let h = self.style.bottomLineHeight
+        
+        lineView.frame = CGRect(x: x, y: y, width: w, height: h)
     }
     
     private func setupTitleLabels() {
@@ -117,10 +141,14 @@ extension TCHeaderView {
             }
             
             lbl.frame = CGRect(x: x, y: y, width: w, height: h)
-            
-            if style.isScroll {
-                scrollView.contentSize.width = titleLbls.last!.frame.maxX + style.titleMargin * 0.5
-            }
+        }
+        
+        if style.isScaleEnabel {
+            titleLbls.first?.transform = CGAffineTransform(scaleX: style.maxScale, y: style.maxScale)
+        }
+        
+        if style.isScroll {
+            scrollView.contentSize.width = titleLbls.last!.frame.maxX + style.titleMargin * 0.5
         }
     }
 }
@@ -146,19 +174,35 @@ extension TCHeaderView {
         labelScrollToCenter(targetLbl)
                 
         delegate?.headerView?(self, currentIndex: currentIndex)
+        
+        if style.isScaleEnabel {
+            UIView.animate(withDuration: 0.25, animations: {
+                sourceLbl.transform = CGAffineTransform.identity
+                targetLbl.transform = CGAffineTransform(scaleX: self.style.maxScale, y: self.style.maxScale)
+            })
+        }
+        
+        if style.isShowBottomLine {
+            UIView.animate(withDuration: 0.25, animations: { 
+                self.lineView.frame.origin.x = targetLbl.frame.origin.x
+                self.lineView.frame.size.width = targetLbl.frame.width
+            })
+        }
     }
     
     fileprivate func labelScrollToCenter(_ targetLbl: UILabel) {
+        if style.isScroll == false {
+            return
+        }
+        
         var offsetX = targetLbl.center.x - bounds.width * 0.5
         
-        if style.isScroll {
-            if offsetX < 0 {
-                offsetX = 0
-            }
-            
-            if offsetX > scrollView.contentSize.width - scrollView.bounds.width {
-                offsetX = scrollView.contentSize.width - scrollView.bounds.width
-            }
+        if offsetX < 0 {
+            offsetX = 0
+        }
+        
+        if offsetX > scrollView.contentSize.width - scrollView.bounds.width {
+            offsetX = scrollView.contentSize.width - scrollView.bounds.width
         }
         
         scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
@@ -188,5 +232,20 @@ extension TCHeaderView: TCContentViewDelegate {
         let g2 = normalRGB.green + deltaRGB.green * progress
         let b2 = normalRGB.blue + deltaRGB.blue * progress
         targetLbl.textColor = UIColor(r: r2, g: g2, b: b2)
+        
+        if style.isScaleEnabel {
+            let deltaScale = style.maxScale - 1.0
+            let scale1 = style.maxScale - deltaScale * progress
+            let scale2 = 1.0 + deltaScale * progress
+            sourceLbl.transform = CGAffineTransform(scaleX: scale1, y: scale1)
+            targetLbl.transform = CGAffineTransform(scaleX: scale2, y: scale2)
+        }
+        
+        if style.isShowBottomLine {
+            let deltaX = targetLbl.frame.origin.x - sourceLbl.frame.origin.x
+            let deltaW = targetLbl.frame.width - sourceLbl.frame.width
+            lineView.frame.origin.x = sourceLbl.frame.origin.x + deltaX * progress
+            lineView.frame.size.width = sourceLbl.frame.width + deltaW * progress
+        }
     }
 }
