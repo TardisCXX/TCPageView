@@ -5,10 +5,10 @@
 ## TCPageView的使用
 在需要用到的地方 `#import <TCPageView.h>`
 
-在需要`viewDidLoad`或者 其他创建UI的函数 中调用：
+在`viewDidLoad`或者 `其他创建UI的函数` 中调用：
 
 ```Objective-C
-    // 如果根控制器是UINavigationController，那么就需要下面一行代码
+    // 如果父控制器是UINavigationController，那么就需要下面一行代码
     automaticallyAdjustsScrollViewInsets = false
 
     let style = TCHeaderStyle()
