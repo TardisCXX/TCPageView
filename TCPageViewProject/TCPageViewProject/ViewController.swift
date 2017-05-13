@@ -30,10 +30,11 @@ class ViewController: UIViewController {
             let vc = UIViewController()
             vc.view.backgroundColor = .randomColor
             childControllers.append(vc)
+            self.addChildViewController(vc)
         }
         
         let pageRect = CGRect(x: 0, y: 64.0, width: view.bounds.width, height: view.bounds.height - 64.0)
-        let pageView = TCPageView(frame: pageRect, style: style, titles: titles, childControllers: childControllers)
+        let pageView = TCPageView(frame: pageRect, style: style, titles: titles, childControllers: childControllers, rootController: self)
         pageView.backgroundColor = .randomColor
         view.addSubview(pageView)
         

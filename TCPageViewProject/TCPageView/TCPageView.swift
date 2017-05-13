@@ -18,14 +18,17 @@ class TCPageView: UIView {
     var titles: [String]
     /// 控制器数组
     var childControllers: [UIViewController]
+    /// 根控制器
+    var rootController: UIViewController
     
     // MARK: 构造函数
     
-    init(frame: CGRect, style: TCHeaderStyle, titles: [String], childControllers: [UIViewController]) {
+    init(frame: CGRect, style: TCHeaderStyle, titles: [String], childControllers: [UIViewController], rootController: UIViewController) {
         
         self.style = style
         self.titles = titles
         self.childControllers = childControllers
+        self.rootController = rootController
         
         super.init(frame: frame)
         
@@ -47,7 +50,7 @@ extension TCPageView {
         addSubview(titleView)
         
         let contentRect = CGRect(x: 0, y: style.headerHeight, width: bounds.width, height: bounds.height - style.headerHeight)
-        let contentView = TCContentView(frame: contentRect, childControllers: childControllers)
+        let contentView = TCContentView(frame: contentRect, childControllers: childControllers, rootController: rootController)
         addSubview(contentView)
         
     }

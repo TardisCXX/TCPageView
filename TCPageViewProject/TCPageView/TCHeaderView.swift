@@ -14,6 +14,7 @@ class TCHeaderView: UIView {
     
     fileprivate var style: TCHeaderStyle
     fileprivate var titles: [String]
+    fileprivate var currentIndex: Int = 0
     
     /// scrollView
     fileprivate lazy var scrollView: UIScrollView = {
@@ -101,7 +102,31 @@ extension TCHeaderView {
         guard let targetLbl = tap.view as? UILabel else {
             return
         }
+        let sourceLbl = titleLbls[currentIndex]
+        sourceLbl.textColor = style.normalColor
+        targetLbl.textColor = style.selectColor
+        
+        // 记录当前索引
+        currentIndex = targetLbl.tag
+        
+        labelScrollToCenter(targetLbl)
         
         print(targetLbl.tag)
+    }
+    
+    fileprivate func labelScrollToCenter(_ targetLbl: UILabel) {
+        var offsetX = targetLbl.center.x - bounds.width * 0.5
+        
+        if style.isScroll {
+            if offsetX < 0 {
+                offsetX = 0
+            }
+            
+            if offsetX > scrollView.contentSize.width - scrollView.bounds.width {
+                offsetX = scrollView.contentSize.width - scrollView.bounds.width
+            }
+        }
+        
+        scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
     }
 }

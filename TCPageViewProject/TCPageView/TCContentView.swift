@@ -15,6 +15,8 @@ class TCContentView: UIView {
     // MARK: 属性
     
     fileprivate var childControllers: [UIViewController]
+    /// 根控制器
+    fileprivate var rootController: UIViewController
     
     fileprivate lazy var collectionView: UICollectionView = {
        let layout = UICollectionViewFlowLayout()
@@ -37,8 +39,9 @@ class TCContentView: UIView {
 
     // MARK: 构造函数
     
-    init(frame: CGRect, childControllers: [UIViewController]) {
+    init(frame: CGRect, childControllers: [UIViewController], rootController: UIViewController) {
         self.childControllers = childControllers
+        self.rootController = rootController
         
         super.init(frame: frame)
         
@@ -57,6 +60,10 @@ extension TCContentView {
     fileprivate func setupUI() {
         addSubview(collectionView)
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: kUICollectionViewCellIdenfier)
+        
+        for vc in childControllers {
+            rootController.addChildViewController(vc)
+        }
     }
 }
 
@@ -69,7 +76,14 @@ extension TCContentView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kUICollectionViewCellIdenfier, for: indexPath)
-        cell.backgroundColor = UIColor.randomColor
+        
+        for subView in cell.contentView.subviews {
+            subView.removeFromSuperview()
+        }
+        
+        let vc = childControllers[indexPath.item]
+        vc.view.frame = cell.contentView.bounds
+        cell.contentView.addSubview(vc.view)
         
         return cell
     }
