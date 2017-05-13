@@ -9,7 +9,8 @@
 import UIKit
 
 @objc protocol TCContentViewDelegate: class {
-    @objc optional func contentView(contentView: TCContentView, visableItmeIndex: Int)
+    @objc optional func contentView(_ contentView: TCContentView, visableItmeIndex: Int)
+    @objc optional func contentView(_ contentView: TCContentView, sourceIndex: Int, targetIndex: Int, progress: CGFloat)
 }
 
 fileprivate let kUICollectionViewCellIdenfier = "UICollectionViewCell"
@@ -24,6 +25,8 @@ class TCContentView: UIView {
     fileprivate var childControllers: [UIViewController]
     /// 根控制器
     fileprivate var rootController: UIViewController
+    /// 记录一开始时的offsetX
+    fileprivate var startOffsetX: CGFloat = 0
     
     fileprivate lazy var collectionView: UICollectionView = {
        let layout = UICollectionViewFlowLayout()
@@ -79,7 +82,7 @@ extension TCContentView {
     /// 设置滚动结果
     fileprivate func collectionViewDidEndScroll() {
         let index = collectionView.contentOffset.x / collectionView.bounds.width
-        delegate?.contentView?(contentView: self, visableItmeIndex: Int(index))
+        delegate?.contentView?(self, visableItmeIndex: Int(index))
     }
 }
 
@@ -117,6 +120,33 @@ extension TCContentView: UICollectionViewDelegate {
             collectionViewDidEndScroll()
         }
     }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        startOffsetX = scrollView.contentOffset.x
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.x == startOffsetX {
+            return
+        }
+        
+        var progress: CGFloat = 0
+        let sourceIndex: Int = Int(startOffsetX / collectionView.bounds.width)
+        var targetIndex: Int = 0
+        
+        if collectionView.contentOffset.x > startOffsetX {
+            targetIndex = sourceIndex + 1
+            progress = (collectionView.contentOffset.x - startOffsetX) / collectionView.bounds.width
+        } else {
+            targetIndex = sourceIndex - 1
+            progress = (startOffsetX - collectionView.contentOffset.x) / collectionView.bounds.width
+        }
+        
+//        print("sourceIndex:", sourceIndex, "targetIndex:", targetIndex, "progress:", progress)
+        delegate?.contentView?(self, sourceIndex: sourceIndex, targetIndex: targetIndex, progress: progress)
+    }
+    
+    
 }
 
 // MARK: TCHeaderViewDelegate

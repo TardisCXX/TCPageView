@@ -40,6 +40,28 @@ class TCHeaderView: UIView {
         return scrollView
     }()
     
+    /// 获取普通状态的RGB值
+    fileprivate lazy var normalRGB: (CGFloat, CGFloat, CGFloat) = {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        self.style.normalColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        return (r, g, b)
+    }()
+    
+    /// 获取选中状态的RGB值
+    fileprivate lazy var selectRGB: (CGFloat, CGFloat, CGFloat) = {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        self.style.selectColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        return (r, g, b)
+    }()
+    
     /// 标题标签数组
     fileprivate lazy var titleLbls: [UILabel] = [UILabel]()
     
@@ -103,7 +125,6 @@ extension TCHeaderView {
             if style.isScroll {
                 scrollView.contentSize.width = titleLbls.last!.frame.maxX + style.titleMargin * 0.5
             }
-
         }
     }
 }
@@ -150,11 +171,19 @@ extension TCHeaderView {
 
 extension TCHeaderView: TCContentViewDelegate {
     
-    func contentView(contentView: TCContentView, visableItmeIndex: Int) {
+    func contentView(_ contentView: TCContentView, visableItmeIndex: Int) {
         currentIndex = visableItmeIndex
         let lbl = titleLbls[currentIndex]
         labelScrollToCenter(lbl)
         
         print(visableItmeIndex)
+    }
+    
+    func contentView(_ contentView: TCContentView, sourceIndex: Int, targetIndex: Int, progress: CGFloat) {
+        let sourceLbl = titleLbls[sourceIndex]
+        let targetLbl = titleLbls[targetIndex]
+        
+        
+        
     }
 }
