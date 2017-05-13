@@ -142,15 +142,15 @@ extension TCContentView: UICollectionViewDelegate {
         let sourceIndex: Int = Int(startOffsetX / collectionView.bounds.width)
         var targetIndex: Int = 0
         
-        if collectionView.contentOffset.x > startOffsetX {
+        if collectionView.contentOffset.x > startOffsetX { // left
             targetIndex = sourceIndex + 1
             progress = (collectionView.contentOffset.x - startOffsetX) / collectionView.bounds.width
-        } else {
+
+        } else { // right
             targetIndex = sourceIndex - 1
             progress = (startOffsetX - collectionView.contentOffset.x) / collectionView.bounds.width
         }
         
-//        print("sourceIndex:", sourceIndex, "targetIndex:", targetIndex, "progress:", progress)
         delegate?.contentView?(self, sourceIndex: sourceIndex, targetIndex: targetIndex, progress: progress)
     }
     

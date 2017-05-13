@@ -68,6 +68,14 @@ class TCHeaderView: UIView {
         return view
     }()
     
+    fileprivate lazy var coverView: UIView = {
+        let view = UIView()
+        view.backgroundColor = self.style.coverBackgroundColor
+        view.alpha = self.style.coverAlpha
+        
+        return view
+    }()
+    
     // MARK: 构造函数
     
     init(frame: CGRect, sytle: TCHeaderStyle, titles: [String]) {
@@ -94,6 +102,28 @@ extension TCHeaderView {
         setupTitleLabels()
         
         setupBottomLine()
+        
+        setupCoverView()
+    }
+    
+    private func setupCoverView() {
+        if style.isShowCover == false {
+            return
+        }
+        
+        scrollView.insertSubview(coverView, at: 0)
+        let firstLbl = titleLbls.first!
+        var w = firstLbl.bounds.width
+        let h = style.coverHeight
+        var x = firstLbl.frame.origin.x
+        let y = (firstLbl.frame.height - h) * 0.5
+        if style.isScroll {
+            x -= style.coverMargin
+            w += style.coverMargin * 2
+        }
+        coverView.frame = CGRect(x: x, y: y, width: w, height: h)
+        coverView.layer.cornerRadius = style.coverRadius
+        coverView.layer.masksToBounds = true
     }
     
     private func setupBottomLine() {
@@ -188,6 +218,15 @@ extension TCHeaderView {
                 self.lineView.frame.size.width = targetLbl.frame.width
             })
         }
+        
+        if style.isShowCover {
+            let x = style.isScroll ? (targetLbl.frame.origin.x - style.coverMargin) : targetLbl.frame.origin.x
+            let w = style.isScroll ? (targetLbl.frame.width + style.coverMargin * 2) : targetLbl.frame.width
+            UIView.animate(withDuration: 0.25, animations: { 
+                self.coverView.frame.origin.x = x
+                self.coverView.frame.size.width = w
+            })
+        }
     }
     
     fileprivate func labelScrollToCenter(_ targetLbl: UILabel) {
@@ -246,6 +285,13 @@ extension TCHeaderView: TCContentViewDelegate {
             let deltaW = targetLbl.frame.width - sourceLbl.frame.width
             lineView.frame.origin.x = sourceLbl.frame.origin.x + deltaX * progress
             lineView.frame.size.width = sourceLbl.frame.width + deltaW * progress
+        }
+        
+        if style.isShowCover {
+            let deltaX = targetLbl.frame.origin.x - sourceLbl.frame.origin.x
+            let deltaW = targetLbl.frame.width - sourceLbl.frame.width
+            coverView.frame.origin.x = style.isScroll ? (sourceLbl.frame.origin.x - style.coverMargin + deltaX * progress) :(sourceLbl.frame.origin.x + deltaX * progress)
+            coverView.frame.size.width = style.isScroll ? (sourceLbl.frame.width + style.coverMargin * 2 + deltaW * progress) : (sourceLbl.frame.width + deltaW * progress)
         }
     }
 }

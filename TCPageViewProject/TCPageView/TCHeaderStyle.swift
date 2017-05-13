@@ -30,10 +30,25 @@ class TCHeaderStyle {
     var isShowBottomLine: Bool = false
     /// 底部线条颜色
     var bottomLineColor: UIColor = UIColor.orange
+    /// 底部线条的高
     var bottomLineHeight: CGFloat = 2.0
     
     /// 文字是否需要缩放
     var isScaleEnabel: Bool = false
     /// 缩放最大值
     var maxScale: CGFloat = 1.2
+    
+    /// 是否显示遮罩
+    var isShowCover: Bool = false
+    /// 遮罩背景颜色
+    var coverBackgroundColor: UIColor = UIColor.black
+    /// 遮罩透明度
+    var coverAlpha:CGFloat = 0.4
+    /// 遮罩间隙
+    var coverMargin: CGFloat = 8.0
+    /// 遮罩的高
+    var coverHeight: CGFloat = 25.0
+    /// 遮罩的圆角半径
+    var coverRadius: CGFloat = 12.0
+    
 }
