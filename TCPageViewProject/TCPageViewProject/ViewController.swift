@@ -42,6 +42,7 @@ class ViewController: UIViewController {
         pageView.backgroundColor = .randomColor
         view.addSubview(pageView)
         
+        
     }
 
     override func didReceiveMemoryWarning() {
