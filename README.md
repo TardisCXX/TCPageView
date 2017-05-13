@@ -3,7 +3,7 @@
 **TCPageView** 是一个不错的选项视图功能组件，它高度封装和集成简单。
 
 ## TCPageView的使用
-在需要用到的地方 `#import <TCPageView.h>`
+在需要用到的地方 `import TCPageView`
 
 在`viewDidLoad`或者 `其他创建UI的函数` 中调用：
 
