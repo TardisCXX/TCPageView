@@ -51,4 +51,10 @@ class TCHeaderStyle {
     /// 遮罩的圆角半径
     var coverRadius: CGFloat = 12.0
     
+    
+    // MARK: ------------------
+    
+    /// pageControl的高度
+    var pageControlHeight: CGFloat = 20.0
+    
 }

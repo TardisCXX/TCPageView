@@ -18,15 +18,31 @@ class ViewController: UIViewController {
         
         automaticallyAdjustsScrollViewInsets = false
         
+        setupPageView2()
+    }
+    
+    fileprivate func setupPageView2() {
+        let style = TCHeaderStyle()
+        
+        let titles = ["热门", "头条", "地理", "文学", "历史"]
+
+        let pageRect = CGRect(x: 0, y: 64.0, width: view.bounds.width, height: 300.0)
+        let pageView = TCPageView(frame: pageRect, style: style, titles: titles)
+        pageView.backgroundColor = .randomColor
+        view.addSubview(pageView)
+    }
+
+    
+    fileprivate func setupPageView1() {
         let style = TCHeaderStyle()
         style.isScroll = true
-//        style.isShowBottomLine = true
-//        style.isScaleEnabel = true
+        //        style.isShowBottomLine = true
+        //        style.isScaleEnabel = true
         style.isShowCover = true
         
-//        let titles = ["热门", "头条", "地理", "文学", "历史"]
+        //        let titles = ["热门", "头条", "地理", "文学", "历史"]
         let titles = ["热门", "头条", "天文地理", "史前文明", "人类大科技", "暴雪游戏嘉年华", "漫威世界之平行宇宙", "美女日常"]
-
+        
         
         var childControllers = [UIViewController]()
         
@@ -41,13 +57,6 @@ class ViewController: UIViewController {
         let pageView = TCPageView(frame: pageRect, style: style, titles: titles, childControllers: childControllers, rootController: self)
         pageView.backgroundColor = .randomColor
         view.addSubview(pageView)
-        
-        
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 
