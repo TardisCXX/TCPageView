@@ -5,9 +5,9 @@
 ## TCPageView的使用
 在需要用到的地方 `import TCPageView`
 
-在`viewDidLoad`或者 `其他创建UI的函数` 中调用：
+当需要使用`控制器`push或者modal子控制器在`viewDidLoad`或者 `其他创建UI的函数` 中调用：
 
-```Objective-C
+```Swift
     // 如果父控制器是UINavigationController，那么就需要下面一行代码
     automaticallyAdjustsScrollViewInsets = false
 
@@ -34,6 +34,62 @@
     let pageView = TCPageView(frame: pageRect, style: style, titles: titles, childControllers: childControllers, rootController: self)
     pageView.backgroundColor = .randomColor
     view.addSubview(pageView)
+```
+
+当需要使用`collectionView`或者`单纯view`添加子视图时，在`viewDidLoad`或者 `其他创建UI的函数` 中调用：
+```Swift
+let style = TCHeaderStyle()
+
+let titles = ["热门", "头条", "地理", "文学"]
+
+let layout = TCPageViewFlowLayout()
+layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
+layout.minimumLineSpacing = 10
+layout.minimumInteritemSpacing = 10
+layout.scrollDirection = .horizontal
+layout.cols = 4
+layout.rows = 2
+
+let pageRect = CGRect(x: 0, y: 64.0, width: view.bounds.width, height: 300.0)
+let pageView = TCPageView(frame: pageRect, style: style, titles: titles, layout:layout)
+pageView.backgroundColor = .randomColor
+view.addSubview(pageView)
+// 设置数据源
+pageView.dataSource = self
+// 注册cell
+pageView.registerCell(UICollectionViewCell.self, identifier: kUICollectionViewCellIdentifier)
+
+```
+实现数据源方法：
+```Swift
+extension ViewController: TCPageViewDataSource {
+
+    func numberOfSectionInPageView(_ pageView: TCPageView) -> Int {
+        return 4
+    }
+
+    func pageView(_ pageView: TCPageView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 20
+        case 1:
+            return 30
+        case 2:
+            return 10
+        case 3:
+            return 15
+        default:
+            return 0
+        }
+    }
+
+    func pageView(_ pageView: TCPageView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = pageView.dequeueReusableCell(reuseIdentifier: kUICollectionViewCellIdentifier, for: indexPath)
+        cell.backgroundColor = UIColor.randomColor
+
+        return cell
+    }
+}
 ```
 ## 安装
 1. CocoaPods安装：
