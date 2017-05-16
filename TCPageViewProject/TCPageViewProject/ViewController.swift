@@ -25,9 +25,15 @@ class ViewController: UIViewController {
         let style = TCHeaderStyle()
         
         let titles = ["热门", "头条", "地理", "文学", "历史"]
+        
+        let layout = TCPageViewFlowLayout()
+        layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
+        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 10
+        layout.scrollDirection = .horizontal
 
         let pageRect = CGRect(x: 0, y: 64.0, width: view.bounds.width, height: 300.0)
-        let pageView = TCPageView(frame: pageRect, style: style, titles: titles)
+        let pageView = TCPageView(frame: pageRect, style: style, titles: titles, layout:layout)
         pageView.backgroundColor = .randomColor
         view.addSubview(pageView)
     }

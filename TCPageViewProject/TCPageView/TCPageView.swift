@@ -8,11 +8,24 @@
 
 import UIKit
 
+protocol TCPageViewDataSource: class {
+    
+    // 设置展示section
+    func numberOfSectionInPageView(_ pageView: TCPageView) -> Int
+    // 设置设置每一个section里面的items
+    func pageView(_ pageView: TCPageView, numberOfItemsInSection section: Int) -> Int
+    // 设置cell
+    func pageView(_ pageView: TCPageView, cellForItemAtIndexPath: IndexPath) -> UICollectionViewCell
+}
+
 fileprivate let kUICollectionViewCellIdentifier = "UICollectionViewCell"
 
 class TCPageView: UIView {
 
-    // MARK: 属性
+    // MARK: 属
+    
+    /// 设置数据源
+    weak var dataSource: TCPageViewDataSource?
     
     /// 样式
     fileprivate var style: TCHeaderStyle
@@ -22,6 +35,8 @@ class TCPageView: UIView {
     fileprivate var childControllers: [UIViewController]!
     /// 根控制器
     fileprivate var rootController: UIViewController!
+    
+    fileprivate var layout: TCPageViewFlowLayout!
     
     fileprivate lazy var headerView: TCHeaderView = {
         let headerRect = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.style.headerHeight)
@@ -45,13 +60,14 @@ class TCPageView: UIView {
         setupContentUI()
     }
     
-    init(frame: CGRect, style: TCHeaderStyle, titles: [String]) {
+    init(frame: CGRect, style: TCHeaderStyle, titles: [String], layout: TCPageViewFlowLayout) {
         self.style = style
         self.titles = titles
+        self.layout = layout
         
         super.init(frame: frame)
         
-        setupUI()
+        setupCollectionUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -76,17 +92,10 @@ extension TCPageView {
     }
     
     /// 设置collectionView的UI
-    fileprivate func setupUI() {
+    fileprivate func setupCollectionUI() {
         addSubview(headerView)
         
         let collectionRect = CGRect(x: 0, y: style.headerHeight, width: bounds.width, height: bounds.height - style.headerHeight - style.pageControlHeight)
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 50, height: 60)
-        layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
-        layout.scrollDirection = .horizontal
-        
         let collectionView = UICollectionView(frame: collectionRect, collectionViewLayout: layout)
         collectionView.isPagingEnabled = true
         collectionView.scrollsToTop = false
@@ -108,18 +117,15 @@ extension TCPageView {
 extension TCPageView: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return dataSource?.numberOfSectionInPageView(self) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return dataSource?.pageView(self, numberOfItemsInSection: section) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kUICollectionViewCellIdentifier, for: indexPath)
-        cell.backgroundColor = UIColor.randomColor
-        
-        return cell
+        return dataSource!.pageView(self, cellForItemAtIndexPath: indexPath)
     }
 }
 
