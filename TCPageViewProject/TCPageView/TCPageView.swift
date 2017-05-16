@@ -15,10 +15,8 @@ protocol TCPageViewDataSource: class {
     // 设置设置每一个section里面的items
     func pageView(_ pageView: TCPageView, numberOfItemsInSection section: Int) -> Int
     // 设置cell
-    func pageView(_ pageView: TCPageView, cellForItemAtIndexPath: IndexPath) -> UICollectionViewCell
+    func pageView(_ pageView: TCPageView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell
 }
-
-fileprivate let kUICollectionViewCellIdentifier = "UICollectionViewCell"
 
 class TCPageView: UIView {
 
@@ -35,8 +33,14 @@ class TCPageView: UIView {
     fileprivate var childControllers: [UIViewController]!
     /// 根控制器
     fileprivate var rootController: UIViewController!
-    
+    /// 布局
     fileprivate var layout: TCPageViewFlowLayout!
+    
+    fileprivate var collectionView: UICollectionView!
+    fileprivate var pageControl: UIPageControl!
+    
+    /// 当前section
+    fileprivate lazy var currentSection: Int = 0
     
     fileprivate lazy var headerView: TCHeaderView = {
         let headerRect = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.style.headerHeight)
@@ -96,20 +100,42 @@ extension TCPageView {
         addSubview(headerView)
         
         let collectionRect = CGRect(x: 0, y: style.headerHeight, width: bounds.width, height: bounds.height - style.headerHeight - style.pageControlHeight)
-        let collectionView = UICollectionView(frame: collectionRect, collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: collectionRect, collectionViewLayout: layout)
         collectionView.isPagingEnabled = true
         collectionView.scrollsToTop = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.bounces = false
         collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: kUICollectionViewCellIdentifier)
-        
+        collectionView.delegate = self
+
         addSubview(collectionView)
         
-        let pageControl = UIPageControl(frame: CGRect(x: 0, y: collectionView.frame.maxY, width: bounds.width, height: style.pageControlHeight))
-        pageControl.numberOfPages = 4
+        pageControl = UIPageControl(frame: CGRect(x: 0, y: collectionView.frame.maxY, width: bounds.width, height: style.pageControlHeight))
+        pageControl.numberOfPages = 1
+        pageControl.hidesForSinglePage = true
+        pageControl.isEnabled = false
+        pageControl.tintColor = UIColor.white
+        pageControl.currentPageIndicatorTintColor = UIColor.red
         
         addSubview(pageControl)
+        
+        headerView.delegate = self
+    }
+}
+
+// MARK: TCHeaderViewDelegate
+extension TCPageView: TCHeaderViewDelegate {
+    
+    func headerView(_ headerView: TCHeaderView, currentIndex: Int) {
+        let indexPath = IndexPath(item: 0, section: currentIndex)
+        collectionView.scrollToItem(at: indexPath, at: .left, animated: false)
+        collectionView.contentOffset.x -= layout.sectionInset.left
+        
+        let itemCount = dataSource?.pageView(self, numberOfItemsInSection: currentIndex) ?? 0
+        pageControl.numberOfPages = (itemCount - 1) / (layout.cols * layout.rows) + 1
+        pageControl.currentPage = 0
+        
+        currentSection = currentIndex
     }
 }
 
@@ -121,11 +147,80 @@ extension TCPageView: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource?.pageView(self, numberOfItemsInSection: section) ?? 0
+        let itemCount = dataSource?.pageView(self, numberOfItemsInSection: section) ?? 0
+        if section == 0 {
+            pageControl.numberOfPages = (itemCount - 1) / (layout.cols * layout.rows) + 1
+            pageControl.currentPage = 0
+        }
+        
+        return itemCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return dataSource!.pageView(self, cellForItemAtIndexPath: indexPath)
+    }
+}
+
+// MARK: UICollectionViewDelegate
+extension TCPageView: UICollectionViewDelegate {
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        collectionViewDidEndScroll()
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            collectionViewDidEndScroll()
+        }
+    }
+}
+
+// MARK: private
+extension TCPageView {
+    
+    fileprivate func collectionViewDidEndScroll() {
+//        guard let cell = collectionView.visibleCells.last,
+//        let indexPath = collectionView.indexPath(for: cell) else {
+//            return
+//        }
+        
+        let point = CGPoint(x: layout.sectionInset.left + collectionView.contentOffset.x, y: layout.sectionInset.top)
+        guard let indexPath = collectionView.indexPathForItem(at: point) else {
+            return
+        }
+        
+        if currentSection != indexPath.section {
+            let itemCount = dataSource?.pageView(self, numberOfItemsInSection: indexPath.section) ?? 0
+            pageControl.numberOfPages = (itemCount - 1) / (layout.cols * layout.rows) + 1
+            pageControl.currentPage = 0
+            currentSection = indexPath.section
+            
+            // 修改headerView标题滚动位置
+            headerView.setCurrentIndex(currentIndex: currentSection)
+        }
+        
+        let pageIndex = indexPath.item / (layout.cols * layout.rows)
+        pageControl.currentPage = pageIndex
+    }
+
+}
+
+// MARK: public
+extension TCPageView {
+    
+    /// 注册cell
+    func registerCell(_ cellClass: AnyClass?, identifier: String) {
+        collectionView.register(cellClass, forCellWithReuseIdentifier: identifier)
+    }
+    
+    /// 注册 cell
+    func registerNib(_ nib: UINib?, identifier: String) {
+        collectionView.register(nib, forCellWithReuseIdentifier: identifier)
+    }
+    
+    /// 循环复用cell
+    func dequeueReusableCell(reuseIdentifier: String, for indexPath: IndexPath) -> UICollectionViewCell {
+        return collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     }
 }
 

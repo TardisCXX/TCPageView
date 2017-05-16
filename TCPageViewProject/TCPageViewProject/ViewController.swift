@@ -8,6 +8,8 @@
 
 import UIKit
 
+fileprivate let kUICollectionViewCellIdentifier = "UICollectionViewCell"
+
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -24,17 +26,21 @@ class ViewController: UIViewController {
     fileprivate func setupPageView2() {
         let style = TCHeaderStyle()
         
-        let titles = ["热门", "头条", "地理", "文学", "历史"]
+        let titles = ["热门", "头条", "地理", "文学"]
         
         let layout = TCPageViewFlowLayout()
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 10
         layout.scrollDirection = .horizontal
+        layout.cols = 4
+        layout.rows = 2
 
         let pageRect = CGRect(x: 0, y: 64.0, width: view.bounds.width, height: 300.0)
         let pageView = TCPageView(frame: pageRect, style: style, titles: titles, layout:layout)
         pageView.backgroundColor = .randomColor
+        pageView.dataSource = self
+        pageView.registerCell(UICollectionViewCell.self, identifier: kUICollectionViewCellIdentifier)
         view.addSubview(pageView)
     }
 
@@ -66,5 +72,34 @@ class ViewController: UIViewController {
     }
 
 
+}
+
+extension ViewController: TCPageViewDataSource {
+    
+    func numberOfSectionInPageView(_ pageView: TCPageView) -> Int {
+        return 4
+    }
+    
+    func pageView(_ pageView: TCPageView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 20
+        case 1:
+            return 30
+        case 2:
+            return 10
+        case 3:
+            return 15
+        default:
+            return 0
+        }
+    }
+    
+    func pageView(_ pageView: TCPageView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = pageView.dequeueReusableCell(reuseIdentifier: kUICollectionViewCellIdentifier, for: indexPath)
+        cell.backgroundColor = UIColor.randomColor
+        
+        return cell
+    }
 }
 

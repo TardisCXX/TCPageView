@@ -194,6 +194,13 @@ extension TCHeaderView {
             return
         }
         
+        setTargetLabel(targetLbl)
+    
+        delegate?.headerView?(self, currentIndex: currentIndex)
+    }
+    
+    /// 设置targetLabel
+    fileprivate func setTargetLabel(_ targetLbl: UILabel) {
         let sourceLbl = titleLbls[currentIndex]
         sourceLbl.textColor = style.normalColor
         targetLbl.textColor = style.selectColor
@@ -202,8 +209,6 @@ extension TCHeaderView {
         currentIndex = targetLbl.tag
         
         labelScrollToCenter(targetLbl)
-                
-        delegate?.headerView?(self, currentIndex: currentIndex)
         
         if style.isScaleEnabel {
             UIView.animate(withDuration: 0.25, animations: {
@@ -213,7 +218,7 @@ extension TCHeaderView {
         }
         
         if style.isShowBottomLine {
-            UIView.animate(withDuration: 0.25, animations: { 
+            UIView.animate(withDuration: 0.25, animations: {
                 self.lineView.frame.origin.x = targetLbl.frame.origin.x
                 self.lineView.frame.size.width = targetLbl.frame.width
             })
@@ -222,13 +227,14 @@ extension TCHeaderView {
         if style.isShowCover {
             let x = style.isScroll ? (targetLbl.frame.origin.x - style.coverMargin) : targetLbl.frame.origin.x
             let w = style.isScroll ? (targetLbl.frame.width + style.coverMargin * 2) : targetLbl.frame.width
-            UIView.animate(withDuration: 0.25, animations: { 
+            UIView.animate(withDuration: 0.25, animations: {
                 self.coverView.frame.origin.x = x
                 self.coverView.frame.size.width = w
             })
         }
     }
     
+    /// 让targetLbl滚动到中间位置
     fileprivate func labelScrollToCenter(_ targetLbl: UILabel) {
         if style.isScroll == false {
             return
@@ -293,5 +299,13 @@ extension TCHeaderView: TCContentViewDelegate {
             coverView.frame.origin.x = style.isScroll ? (sourceLbl.frame.origin.x - style.coverMargin + deltaX * progress) :(sourceLbl.frame.origin.x + deltaX * progress)
             coverView.frame.size.width = style.isScroll ? (sourceLbl.frame.width + style.coverMargin * 2 + deltaW * progress) : (sourceLbl.frame.width + deltaW * progress)
         }
+    }
+}
+
+// MARK: public
+extension TCHeaderView {
+    
+    func setCurrentIndex(currentIndex: Int) {
+        setTargetLabel(titleLbls[currentIndex])
     }
 }
