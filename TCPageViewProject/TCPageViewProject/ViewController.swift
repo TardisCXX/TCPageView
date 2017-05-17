@@ -20,7 +20,9 @@ class ViewController: UIViewController {
         
         automaticallyAdjustsScrollViewInsets = false
         
-        setupPageView2()
+//        setupPageView2()
+        
+        setupPageView1()
     }
     
     fileprivate func setupPageView2() {

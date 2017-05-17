@@ -139,17 +139,37 @@ extension TCContentView: UICollectionViewDelegate {
         }
         
         var progress: CGFloat = 0
-        let sourceIndex: Int = Int(startOffsetX / collectionView.bounds.width)
+        var sourceIndex: Int = 0
         var targetIndex: Int = 0
         
+        // 取余
+        progress = scrollView.contentOffset.x.truncatingRemainder(dividingBy: scrollView.bounds.width) / scrollView.bounds.width
+        
+        if  progress == 0 {
+            return
+        }
+        
+        let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
+        
         if collectionView.contentOffset.x > startOffsetX { // left
-            targetIndex = sourceIndex + 1
-            progress = (collectionView.contentOffset.x - startOffsetX) / collectionView.bounds.width
+            sourceIndex = index
+            targetIndex = index + 1
+            
+            if targetIndex > childControllers.count {
+                return
+            }
 
         } else { // right
-            targetIndex = sourceIndex - 1
-            progress = (startOffsetX - collectionView.contentOffset.x) / collectionView.bounds.width
+            sourceIndex = index + 1
+            targetIndex = index
+            progress = 1 - progress
+            
+            if targetIndex < 0 {
+                return
+            }
         }
+        
+        
         
         delegate?.contentView?(self, sourceIndex: sourceIndex, targetIndex: targetIndex, progress: progress)
     }
