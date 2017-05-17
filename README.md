@@ -5,7 +5,7 @@
 ## TCPageView的使用
 在需要用到的地方 `import TCPageView`
 
-当需要使用`控制器`push或者modal子控制器在`viewDidLoad`或者 `其他创建UI的函数` 中调用：
+当需要使用`控制器`push或者modal子控制器，就在`viewDidLoad`或者 `其他创建UI的函数` 中调用：
 
 ```Swift
     // 如果父控制器是UINavigationController，那么就需要下面一行代码
@@ -35,8 +35,8 @@
     pageView.backgroundColor = .randomColor
     view.addSubview(pageView)
 ```
-
-当需要使用`collectionView`或者`单纯view`添加子视图时，在`viewDidLoad`或者 `其他创建UI的函数` 中调用：
+---
+当需要使用`collectionView`或者`单纯view`添加子视图时，就在`viewDidLoad`或者 `其他创建UI的函数` 中调用：
 ```Swift
 let style = TCHeaderStyle()
 
@@ -47,8 +47,8 @@ layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
 layout.minimumLineSpacing = 10
 layout.minimumInteritemSpacing = 10
 layout.scrollDirection = .horizontal
-layout.cols = 4
-layout.rows = 2
+layout.cols = 5
+layout.rows = 3
 
 let pageRect = CGRect(x: 0, y: 64.0, width: view.bounds.width, height: 300.0)
 let pageView = TCPageView(frame: pageRect, style: style, titles: titles, layout:layout)
@@ -56,6 +56,8 @@ pageView.backgroundColor = .randomColor
 view.addSubview(pageView)
 // 设置数据源
 pageView.dataSource = self
+// 如有需要设置代理
+pageView.delegate = self
 // 注册cell
 pageView.registerCell(UICollectionViewCell.self, identifier: kUICollectionViewCellIdentifier)
 
@@ -71,9 +73,9 @@ extension ViewController: TCPageViewDataSource {
     func pageView(_ pageView: TCPageView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 20
+            return 25
         case 1:
-            return 30
+            return 35
         case 2:
             return 10
         case 3:
@@ -91,6 +93,17 @@ extension ViewController: TCPageViewDataSource {
     }
 }
 ```
+如果需要点击，那就实现代理
+```Swift
+extension ViewController: TCPageViewDelegate {
+
+    func pageView(_ pageView: TCPageView, didSelectedAtIndexPath indexPath: IndexPath) {
+        print("section:",indexPath.section, "item:", indexPath.item)
+    }
+}
+
+```
+
 ## 安装
 1. CocoaPods安装：
 ```

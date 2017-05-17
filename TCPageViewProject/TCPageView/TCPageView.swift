@@ -18,12 +18,20 @@ protocol TCPageViewDataSource: class {
     func pageView(_ pageView: TCPageView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell
 }
 
+@objc protocol TCPageViewDelegate: class {
+    
+    /// 当选中item时调用
+    @objc optional func pageView(_ pageView: TCPageView, didSelectedAtIndexPath indexPath: IndexPath)
+}
+
 class TCPageView: UIView {
 
     // MARK: 属
     
     /// 设置数据源
     weak var dataSource: TCPageViewDataSource?
+    /// 设置代理
+    weak var delegate: TCPageViewDelegate?
     
     /// 样式
     fileprivate var style: TCHeaderStyle
@@ -172,6 +180,10 @@ extension TCPageView: UICollectionViewDelegate {
         if !decelerate {
             collectionViewDidEndScroll()
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.pageView?(self, didSelectedAtIndexPath: indexPath)
     }
 }
 

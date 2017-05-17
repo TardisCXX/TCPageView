@@ -40,6 +40,7 @@ class ViewController: UIViewController {
         let pageView = TCPageView(frame: pageRect, style: style, titles: titles, layout:layout)
         pageView.backgroundColor = .randomColor
         pageView.dataSource = self
+        pageView.delegate = self
         pageView.registerCell(UICollectionViewCell.self, identifier: kUICollectionViewCellIdentifier)
         view.addSubview(pageView)
     }
@@ -100,6 +101,13 @@ extension ViewController: TCPageViewDataSource {
         cell.backgroundColor = UIColor.randomColor
         
         return cell
+    }
+}
+
+extension ViewController: TCPageViewDelegate {
+    
+    func pageView(_ pageView: TCPageView, didSelectedAtIndexPath indexPath: IndexPath) {
+        print("section:",indexPath.section, "item:", indexPath.item)
     }
 }
 
